@@ -2,7 +2,9 @@ package hu.webuni.userservice.security;
 
 import hu.webuni.userservice.dto.LoginDto;
 import hu.webuni.userservice.security.entity.AppUser;
+import hu.webuni.userservice.security.entity.ResponsibilityAppUser;
 import hu.webuni.userservice.security.repository.AppUserRepository;
+import hu.webuni.userservice.security.repository.ResponsibilityAppUserRepository;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,6 +35,7 @@ public class SecurityService {
     @Value("${redis.user.refresh.postfix}")
     private String redisUserRefreshPostfix;
     private final AppUserRepository appUserRepository;
+    private final ResponsibilityAppUserRepository responsibilityAppUserRepository;
     private final PasswordEncoder passwordEncoder;
 
     public Map<String, String> login(UserDetails userDetails) {
@@ -65,7 +68,7 @@ public class SecurityService {
             redisService.deleteFromRedis(username + redisUserPostfix);
             redisService.deleteFromRedis(username + redisUserRefreshPostfix);
         } catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.SERVICE_UNAVAILABLE,"Error during delete user from redis");
+            throw new ResponseStatusException(HttpStatus.SERVICE_UNAVAILABLE, "Error during delete user from redis");
         }
         logger.info("{} user successfully logged out.", username);
         return "LOGGED OUT";
@@ -82,7 +85,7 @@ public class SecurityService {
     }
 
     private String tokenBearerRemover(String token) {
-        logger.info("Token bearer remover on: {}",token);
+        logger.info("Token bearer remover on: {}", token);
         if (token != null && token.startsWith(BEARER)) {
             return token.substring(BEARER.length());
         } else {
@@ -94,10 +97,16 @@ public class SecurityService {
         Optional<AppUser> optionalAppUser = appUserRepository.findAppuserByUsername(loginDto.getUsername());
         if (optionalAppUser.isPresent())
             throw new ResponseStatusException(HttpStatus.CONFLICT, "User already exists.");
-        AppUser appUser = AppUser.builder()
+        AppUser appUser = appUserRepository.save(AppUser.builder()
                 .username(loginDto.getUsername())
                 .password(passwordEncoder.encode(loginDto.getPassword()))
-                .build();
+                .build());
+        responsibilityAppUserRepository.save(
+                ResponsibilityAppUser.builder()
+                        .username(appUser.getUsername())
+                        .role("customer")
+                        .build()
+        );
         appUserRepository.save(appUser);
     }
 }

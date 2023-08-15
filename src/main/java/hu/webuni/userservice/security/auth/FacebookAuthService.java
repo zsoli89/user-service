@@ -2,7 +2,9 @@ package hu.webuni.userservice.security.auth;
 
 import hu.webuni.userservice.security.WebshopUserDetailsService;
 import hu.webuni.userservice.security.entity.AppUser;
+import hu.webuni.userservice.security.entity.ResponsibilityAppUser;
 import hu.webuni.userservice.security.repository.AppUserRepository;
+import hu.webuni.userservice.security.repository.ResponsibilityAppUserRepository;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -20,6 +22,7 @@ public class FacebookAuthService {
     private static final String GRAPH_API_BASE_URL = "https://graph.facebook.com/v13.0";
 
     private final AppUserRepository appUserRepository;
+    private final ResponsibilityAppUserRepository responsibilityAppUserRepository;
     private final WebshopUserDetailsService webshopUserDetailsService;
 
     @Getter
@@ -53,16 +56,23 @@ public class FacebookAuthService {
     }
 
 
-    private AppUser findOrCreateUser(FacebookData facebookData) {
+    @Transactional
+    public AppUser findOrCreateUser(FacebookData facebookData) {
         String fbId = String.valueOf(facebookData.getId());
         Optional<AppUser> optionalExistingUser = appUserRepository.findAppUserByFacebookId(fbId);
-        if(optionalExistingUser.isEmpty()) {
-            AppUser newUser = AppUser.builder()
-                    .facebookId(fbId)
-                    .username(facebookData.getEmail())
-                    .password("dummy")
-                    .build();
-            return appUserRepository.save(newUser);
+        if (optionalExistingUser.isEmpty()) {
+            AppUser fbUser = appUserRepository.save(
+                    AppUser.builder()
+                            .username(facebookData.getEmail())
+                            .password("dummy")
+                            .facebookId(fbId).build());
+            responsibilityAppUserRepository.save(
+                    ResponsibilityAppUser.builder()
+                            .username(fbUser.getUsername())
+                            .role("customer")
+                            .build()
+            );
+            return appUserRepository.save(fbUser);
         } else {
             return optionalExistingUser.get();
         }
