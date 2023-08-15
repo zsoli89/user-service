@@ -1,0 +1,1 @@
+alter table if exists address add column webshop_address varchar(255);

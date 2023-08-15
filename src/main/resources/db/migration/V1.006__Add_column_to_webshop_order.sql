@@ -1,0 +1,1 @@
+alter table if exists webshop_order add column shipping_id varchar(255);

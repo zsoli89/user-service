@@ -1,0 +1,11 @@
+create sequence if not exists category_seq start with 1 increment by 50;
+create sequence if not exists product_seq start with 1 increment by 50;
+create sequence if not exists revinfo_seq start with 1 increment by 50;
+create table category (creation_date date, creation_time time(6), last_modified_date date, last_modified_time time(6), id bigint not null, creation_username varchar(255), last_modified_username varchar(255), name varchar(255), primary key (id));
+create table category_aud (rev integer not null, revtype smallint, id bigint not null, name varchar(255), primary key (rev, id));
+create table product (amount_units smallint check (amount_units between 0 and 7), creation_date date, creation_time time(6), last_modified_date date, last_modified_time time(6), price float(53), category_id bigint, id bigint not null, quantity bigint, size bigint, brand varchar(255), color varchar(255), creation_username varchar(255), description varchar(255), last_modified_username varchar(255), name varchar(255), primary key (id));
+create table product_aud (amount_units smallint check (amount_units between 0 and 7), price float(53), rev integer not null, revtype smallint, category_id bigint, id bigint not null, quantity bigint, size bigint, brand varchar(255), color varchar(255), description varchar(255), name varchar(255), primary key (rev, id));
+create table revinfo (rev integer not null, revtstmp bigint, primary key (rev));
+alter table if exists category_aud add constraint FKc9m640crhsib2ws80um6xuk1w foreign key (rev) references revinfo;
+alter table if exists product add constraint FK1mtsbur82frn64de7balymq9s foreign key (category_id) references category;
+alter table if exists product_aud add constraint FK9vwllld6jlw5xys1ay911oh1x foreign key (rev) references revinfo;
