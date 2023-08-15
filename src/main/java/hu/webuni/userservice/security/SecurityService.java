@@ -1,5 +1,8 @@
 package hu.webuni.userservice.security;
 
+import hu.webuni.userservice.dto.LoginDto;
+import hu.webuni.userservice.security.entity.AppUser;
+import hu.webuni.userservice.security.repository.AppUserRepository;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,11 +12,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -27,6 +32,8 @@ public class SecurityService {
     private String redisUserPostfix;
     @Value("${redis.user.refresh.postfix}")
     private String redisUserRefreshPostfix;
+    private final AppUserRepository appUserRepository;
+    private final PasswordEncoder passwordEncoder;
 
     public Map<String, String> login(UserDetails userDetails) {
         try {
@@ -83,4 +90,14 @@ public class SecurityService {
         }
     }
 
+    public void registerUser(LoginDto loginDto) {
+        Optional<AppUser> optionalAppUser = appUserRepository.findAppuserByUsername(loginDto.getUsername());
+        if (optionalAppUser.isPresent())
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "User already exists.");
+        AppUser appUser = AppUser.builder()
+                .username(loginDto.getUsername())
+                .password(passwordEncoder.encode(loginDto.getPassword()))
+                .build();
+        appUserRepository.save(appUser);
+    }
 }

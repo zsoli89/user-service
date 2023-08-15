@@ -1,8 +1,8 @@
 package hu.webuni.userservice.security.auth;
 
-import hu.webuni.security.entity.AppUser;
-import hu.webuni.security.repository.AppUserRepository;
 import hu.webuni.userservice.security.WebshopUserDetailsService;
+import hu.webuni.userservice.security.entity.AppUser;
+import hu.webuni.userservice.security.repository.AppUserRepository;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -35,7 +35,6 @@ public class FacebookAuthService {
         FacebookData fbData = getEmailOfFbUser(fbToken);
         AppUser appUser = findOrCreateUser(fbData);
         return webshopUserDetailsService.createUserDetails(appUser);
-
     }
 
     private FacebookData getEmailOfFbUser(String fbToken) {

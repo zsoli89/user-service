@@ -1,9 +1,9 @@
 package hu.webuni.userservice.security;
 
-import hu.webuni.security.entity.AppUser;
-import hu.webuni.security.entity.ResponsibilityAppUser;
-import hu.webuni.security.repository.AppUserRepository;
-import hu.webuni.security.repository.ResponsibilityAppUserRepository;
+import hu.webuni.userservice.security.entity.AppUser;
+import hu.webuni.userservice.security.entity.ResponsibilityAppUser;
+import hu.webuni.userservice.security.repository.AppUserRepository;
+import hu.webuni.userservice.security.repository.ResponsibilityAppUserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
