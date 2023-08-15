@@ -3,7 +3,6 @@ package hu.webuni.userservice.security;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -30,7 +29,7 @@ public class SecurityConfig {
     }
 
     @Bean
-    protected SecurityFilterChain filterChain(HttpSecurity http/*, MvcRequestMatcher.Builder mvc*/) throws Exception {
+    protected SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http
                 .csrf(csrf ->
                         csrf.disable()
@@ -40,11 +39,8 @@ public class SecurityConfig {
                 )
                 .authorizeHttpRequests(auth ->
                         auth
-                                .requestMatchers("/api/security/free/**").permitAll()
-                                .requestMatchers("/services").permitAll()
-                                .requestMatchers("/services/**").permitAll()
-                                .requestMatchers(HttpMethod.GET, "/api/category/**").hasAuthority("admin")
-                                .anyRequest().permitAll()
+                                .requestMatchers("/catalog/**").permitAll()
+                                .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
                 .build()

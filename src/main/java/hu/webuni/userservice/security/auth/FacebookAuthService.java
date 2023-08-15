@@ -1,7 +1,7 @@
 package hu.webuni.userservice.security.auth;
 
-import hu.webuni.userservice.model.entity.AppUser;
-import hu.webuni.userservice.repository.AppUserRepository;
+import hu.webuni.security.entity.AppUser;
+import hu.webuni.security.repository.AppUserRepository;
 import hu.webuni.userservice.security.WebshopUserDetailsService;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

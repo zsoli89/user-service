@@ -4,6 +4,7 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.Claim;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,6 +15,8 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
+import java.security.interfaces.ECPrivateKey;
+import java.security.interfaces.ECPublicKey;
 
 import java.util.*;
 import java.util.concurrent.TimeUnit;
@@ -25,15 +28,29 @@ public class JwtTokenService {
     private final RedisService redisService;
     private static final Logger logger = LoggerFactory.getLogger(JwtTokenService.class);
     private static final String AUTH = "auth";
-    private Algorithm alg = Algorithm.HMAC256("mysecret");
-    private static final String BEARER = "Bearer ";
     private String issuer = "WebshopApp";
     @Value("${redis.user.postfix}")
     private String redisUserPostfix;
     @Value("${redis.user.refresh.postfix}")
     private String redisUserRefreshPostfix;
-    @Value("${jwt.secret}")
-    private String secret;
+    private Algorithm signerAlg;
+    private Algorithm validatorAlg;
+
+    @Value("${hu.webuni.tokenlib.keypaths.private:#{null}}")
+    private String pathToPemWithPrivateKey;
+    @Value("${hu.webuni.tokenlib.keypaths.public:#{null}}")
+    private String pathToPemWithPublicKey;
+
+    @PostConstruct
+    public void init() throws Exception {
+        if(pathToPemWithPrivateKey != null) {
+            signerAlg = Algorithm.ECDSA512(null, (ECPrivateKey) PemUtils.getPrivateKey(pathToPemWithPrivateKey));
+        }
+
+        if(pathToPemWithPublicKey != null) {
+            validatorAlg = Algorithm.ECDSA512((ECPublicKey) PemUtils.getPublicKey(pathToPemWithPublicKey), null);
+        }
+    }
 
     public String generateAccessToken(UserDetails userDetails) {
         logger.info("Generate new access token for user: {}", userDetails.getUsername());
@@ -46,7 +63,7 @@ public class JwtTokenService {
                 .withExpiresAt(new Date(System.currentTimeMillis() + TimeUnit.MINUTES.toMillis(20)))
                 .withIssuer(issuer)
                 .withJWTId(id)
-                .sign(alg);
+                .sign(signerAlg);
     }
 
     public String generateRefreshToken(UserDetails userDetails) {
@@ -60,12 +77,12 @@ public class JwtTokenService {
                 .withExpiresAt(new Date(System.currentTimeMillis() + TimeUnit.MINUTES.toMillis(200)))
                 .withIssuer(issuer)
                 .withJWTId(id)
-                .sign(alg);
+                .sign(signerAlg);
     }
 
     public UserDetails parseJwt(String jwtToken) {
 
-        DecodedJWT decodedJwt = JWT.require(alg)
+        DecodedJWT decodedJwt = JWT.require(validatorAlg)
                 .withIssuer(issuer)
                 .build()
                 .verify(jwtToken);
@@ -90,7 +107,7 @@ public class JwtTokenService {
     }
 
     public DecodedJWT getAllClaimsFromToken(String token) {
-        return JWT.require(alg)
+        return JWT.require(validatorAlg)
                 .withIssuer(issuer)
                 .build()
                 .verify(token);

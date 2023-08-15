@@ -12,9 +12,6 @@ public class RedisController {
 
     private final RedisService redisService;
 
-
-
-
     @GetMapping("/add/exp/{username}/{token}")
     @ResponseStatus(HttpStatus.OK)
     public void addWithExpiration(@PathVariable String username, @PathVariable String token) {

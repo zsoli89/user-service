@@ -1,4 +1,4 @@
-package hu.webuni.userservice.model.dto;
+package hu.webuni.userservice.dto;
 
 import lombok.Data;
 
