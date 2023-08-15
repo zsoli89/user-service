@@ -94,6 +94,8 @@ public class SecurityService {
     }
 
     public void registerUser(LoginDto loginDto) {
+        if (loginDto.getFbToken() != null || !loginDto.getFbToken().isBlank())
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Can not register with facebookId");
         Optional<AppUser> optionalAppUser = appUserRepository.findAppuserByUsername(loginDto.getUsername());
         if (optionalAppUser.isPresent())
             throw new ResponseStatusException(HttpStatus.CONFLICT, "User already exists.");
