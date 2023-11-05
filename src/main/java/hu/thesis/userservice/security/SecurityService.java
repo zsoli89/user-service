@@ -5,6 +5,7 @@ import hu.thesis.userservice.security.entity.AppUser;
 import hu.thesis.userservice.security.entity.ResponsibilityAppUser;
 import hu.thesis.userservice.security.repository.AppUserRepository;
 import hu.thesis.userservice.security.repository.ResponsibilityAppUserRepository;
+import hu.webuni.security.JwtTokenService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
