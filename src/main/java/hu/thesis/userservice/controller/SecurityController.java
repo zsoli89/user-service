@@ -15,7 +15,7 @@ import java.util.Map;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/user-service/security")
+@RequestMapping("/api/security")
 public class SecurityController {
 
     private final SecurityService securityService;
