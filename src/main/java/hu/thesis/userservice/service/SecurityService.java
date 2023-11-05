@@ -1,10 +1,10 @@
-package hu.thesis.userservice.security;
+package hu.thesis.userservice.service;
 
 import hu.thesis.userservice.dto.LoginDto;
-import hu.thesis.userservice.security.entity.AppUser;
-import hu.thesis.userservice.security.entity.ResponsibilityAppUser;
-import hu.thesis.userservice.security.repository.AppUserRepository;
-import hu.thesis.userservice.security.repository.ResponsibilityAppUserRepository;
+import hu.thesis.userservice.model.entity.AppUser;
+import hu.thesis.userservice.model.entity.ResponsibilityAppUser;
+import hu.thesis.userservice.repository.AppUserRepository;
+import hu.thesis.userservice.repository.ResponsibilityAppUserRepository;
 import hu.webuni.security.JwtTokenService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -12,7 +12,6 @@ import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;

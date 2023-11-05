@@ -1,7 +1,7 @@
-package hu.thesis.userservice.security.repository;
+package hu.thesis.userservice.repository;
 
 
-import hu.thesis.userservice.security.entity.ResponsibilityAppUser;
+import hu.thesis.userservice.model.entity.ResponsibilityAppUser;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

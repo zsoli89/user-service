@@ -1,4 +1,4 @@
-package hu.thesis.userservice.security.entity;
+package hu.thesis.userservice.model.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -6,15 +6,15 @@ import jakarta.persistence.Id;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
+import java.time.LocalDate;
 
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
 @SuperBuilder
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class ResponsibilityAppUser {
+public class AppUser {
 
     @Id
     @GeneratedValue
@@ -22,6 +22,11 @@ public class ResponsibilityAppUser {
     @EqualsAndHashCode.Include
     private Long id;
 
+    private String name;
+    private LocalDate birthdate;
+
     private String username;
-    private String role;
+    private String password;
+    private String facebookId;
+
 }

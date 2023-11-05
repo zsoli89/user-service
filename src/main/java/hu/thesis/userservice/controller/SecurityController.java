@@ -1,10 +1,10 @@
 package hu.thesis.userservice.controller;
 
 import hu.thesis.userservice.dto.LoginDto;
-import hu.thesis.userservice.security.SecurityService;
+import hu.thesis.userservice.model.entity.AppUser;
 import hu.thesis.userservice.security.auth.UsernamePassAuthService;
 
-import hu.thesis.userservice.security.entity.AppUser;
+import hu.thesis.userservice.service.SecurityService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
