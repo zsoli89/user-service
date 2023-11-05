@@ -86,7 +86,7 @@ public class JwtTokenService {
                 .verify(token);
     }
 
-    public void validateToken(String token, UserDetails userDetails, String keySuffix) {
+    public void validateToken(String token) {
         logger.info("Getting all claims from token.");
         Map<String, Claim> claims = getAllClaimsFromToken(token).getClaims();
         List<String> errors = new ArrayList<>();

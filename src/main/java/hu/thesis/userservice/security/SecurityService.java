@@ -9,7 +9,6 @@ import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -31,8 +30,7 @@ public class SecurityService {
     private final ResponsibilityAppUserRepository responsibilityAppUserRepository;
     private static final String BEARER = "Bearer ";
     private final JwtTokenService jwtTokenService;
-    @Value("${redis.user.postfix}")
-    private String userPostfix;
+
     private final PasswordEncoder passwordEncoder;
 
     public Map<String, String> login(UserDetails userDetails) {
@@ -66,7 +64,7 @@ public class SecurityService {
         if (token == null)
             return null;
         UserDetails principal = jwtTokenService.parseJwt(token);
-        jwtTokenService.validateToken(token, principal, userPostfix);
+        jwtTokenService.validateToken(token);
 
         return new UsernamePasswordAuthenticationToken(principal, null, principal.getAuthorities());
     }
