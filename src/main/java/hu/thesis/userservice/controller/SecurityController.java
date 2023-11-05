@@ -3,6 +3,8 @@ package hu.thesis.userservice.controller;
 import hu.thesis.userservice.dto.LoginDto;
 import hu.thesis.userservice.security.SecurityService;
 import hu.thesis.userservice.security.auth.UsernamePassAuthService;
+
+import hu.thesis.userservice.security.entity.AppUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
@@ -32,6 +34,12 @@ public class SecurityController {
     @ResponseStatus(HttpStatus.OK)
     public void registerUser(@RequestBody LoginDto loginDto) {
         securityService.registerUser(loginDto);
+    }
+
+    @GetMapping("/find/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public AppUser findById(@PathVariable Long id) {
+        return securityService.findById(id);
     }
 
     @GetMapping("/logout/{username}")

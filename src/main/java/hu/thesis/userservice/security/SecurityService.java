@@ -28,7 +28,6 @@ public class SecurityService {
     private static final Logger logger = LoggerFactory.getLogger(SecurityService.class);
     private final AppUserRepository appUserRepository;
     private final ResponsibilityAppUserRepository responsibilityAppUserRepository;
-    private static final String BEARER = "Bearer ";
     private final JwtTokenService jwtTokenService;
 
     private final PasswordEncoder passwordEncoder;
@@ -59,25 +58,6 @@ public class SecurityService {
         return "LOGGED OUT";
     }
 
-    public UsernamePasswordAuthenticationToken validateAccessToken(String token) {
-        token = tokenBearerRemover(token);
-        if (token == null)
-            return null;
-        UserDetails principal = jwtTokenService.parseJwt(token);
-        jwtTokenService.validateToken(token);
-
-        return new UsernamePasswordAuthenticationToken(principal, null, principal.getAuthorities());
-    }
-
-    private String tokenBearerRemover(String token) {
-        logger.info("Token bearer remover on: {}", token);
-        if (token != null && token.startsWith(BEARER)) {
-            return token.substring(BEARER.length());
-        } else {
-            return null;
-        }
-    }
-
     public void registerUser(LoginDto loginDto) {
         if(loginDto == null)
             throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, "");
@@ -95,5 +75,9 @@ public class SecurityService {
                         .build()
         );
         appUserRepository.save(appUser);
+    }
+
+    public AppUser findById(Long id) {
+        return appUserRepository.findById(id).get();
     }
 }
