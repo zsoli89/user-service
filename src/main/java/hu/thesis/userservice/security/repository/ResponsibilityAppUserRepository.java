@@ -1,7 +1,7 @@
-package hu.webuni.userservice.security.repository;
+package hu.thesis.userservice.security.repository;
 
 
-import hu.webuni.userservice.security.entity.ResponsibilityAppUser;
+import hu.thesis.userservice.security.entity.ResponsibilityAppUser;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

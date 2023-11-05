@@ -1,6 +1,6 @@
-package hu.webuni.userservice.security.auth;
+package hu.thesis.userservice.security.auth;
 
-import hu.webuni.userservice.security.WebshopUserDetailsService;
+import hu.thesis.userservice.security.WebshopUserDetailsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

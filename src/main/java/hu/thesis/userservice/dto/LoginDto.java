@@ -1,4 +1,4 @@
-package hu.webuni.userservice.dto;
+package hu.thesis.userservice.dto;
 
 import lombok.Data;
 
@@ -7,5 +7,4 @@ public class LoginDto {
 
     private String username;
     private String password;
-    private String fbToken;
 }

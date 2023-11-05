@@ -1,4 +1,4 @@
-package hu.webuni.userservice.security;
+package hu.thesis.userservice.security;
 
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
@@ -21,7 +21,6 @@ public class PemUtils {
             KeyPair keyPair = converter.getKeyPair(pemKeyPair);
             return keyPair.getPrivate();
         }
-
     }
 
     public static PublicKey getPublicKey(String path) throws Exception {

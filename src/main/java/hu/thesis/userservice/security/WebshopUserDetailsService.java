@@ -1,9 +1,9 @@
-package hu.webuni.userservice.security;
+package hu.thesis.userservice.security;
 
-import hu.webuni.userservice.security.entity.AppUser;
-import hu.webuni.userservice.security.entity.ResponsibilityAppUser;
-import hu.webuni.userservice.security.repository.AppUserRepository;
-import hu.webuni.userservice.security.repository.ResponsibilityAppUserRepository;
+import hu.thesis.userservice.security.entity.AppUser;
+import hu.thesis.userservice.security.entity.ResponsibilityAppUser;
+import hu.thesis.userservice.security.repository.AppUserRepository;
+import hu.thesis.userservice.security.repository.ResponsibilityAppUserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -45,7 +45,6 @@ public class WebshopUserDetailsService implements UserDetailsService {
         List<SimpleGrantedAuthority> roles = getRoles(appUser.getUsername())
                 .stream()
                 .map(SimpleGrantedAuthority::new).toList();
-
         return new User(appUser.getUsername(), appUser.getPassword(), roles);
     }
 

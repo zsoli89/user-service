@@ -1,4 +1,4 @@
-package hu.webuni.userservice.security.auth;
+package hu.thesis.userservice.security.auth;
 
 import org.springframework.security.core.Authentication;
 
