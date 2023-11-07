@@ -105,11 +105,6 @@
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>hu.webuni</groupId>
-			<artifactId>securitylib</artifactId>
-			<version>0.0.8-SNAPSHOT</version>
-		</dependency>
-		<dependency>
 			<groupId>org.bouncycastle</groupId>
 			<artifactId>bcprov-jdk15on</artifactId>
 			<version>1.70</version>
@@ -119,7 +114,13 @@
 			<artifactId>bcpkix-jdk15on</artifactId>
 			<version>1.70</version>
 		</dependency>
-	</dependencies>
+        <dependency>
+            <groupId>hu.thesis</groupId>
+            <artifactId>securitylib</artifactId>
+            <version>0.0.10-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
+    </dependencies>
 
 	<build>
 		<plugins>

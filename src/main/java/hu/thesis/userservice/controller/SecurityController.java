@@ -7,10 +7,12 @@ import hu.thesis.userservice.security.auth.UsernamePassAuthService;
 import hu.thesis.userservice.service.SecurityService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
 @RequiredArgsConstructor
@@ -36,6 +38,7 @@ public class SecurityController {
         securityService.registerUser(loginDto);
     }
 
+    @PreAuthorize("hasAuthority('admin')")
     @GetMapping("/find/{id}")
     @ResponseStatus(HttpStatus.OK)
     public AppUser findById(@PathVariable Long id) {
@@ -46,5 +49,12 @@ public class SecurityController {
     @ResponseStatus(HttpStatus.OK)
     public String logoutByUsername(@PathVariable String username) {
         return securityService.logout(username);
+    }
+
+    @GetMapping("/findAll")
+    @PreAuthorize("hasAuthority('admin')")
+    @ResponseStatus(HttpStatus.OK)
+    public List<AppUser> findAll() {
+        return securityService.findAll();
     }
 }

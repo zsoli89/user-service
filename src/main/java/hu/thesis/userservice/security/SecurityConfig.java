@@ -1,6 +1,6 @@
 package hu.thesis.userservice.security;
 
-import hu.webuni.security.JwtAuthFilter;
+import hu.thesis.security.JwtAuthFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -51,7 +51,7 @@ public class SecurityConfig {
                 )
                 .authorizeHttpRequests(auth ->
                         auth
-                                .requestMatchers("/user-service/security/free/**").permitAll()
+                                .requestMatchers("/api/security/free/**").permitAll()
                                 .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)

@@ -1,8 +1,8 @@
 package hu.thesis.userservice;
 
+import hu.thesis.security.JwtAuthFilter;
+import hu.thesis.security.JwtTokenService;
 import hu.thesis.userservice.service.InitDbService;
-import hu.webuni.security.JwtAuthFilter;
-import hu.webuni.security.JwtTokenService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;

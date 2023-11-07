@@ -5,7 +5,7 @@ import hu.thesis.userservice.model.entity.AppUser;
 import hu.thesis.userservice.model.entity.ResponsibilityAppUser;
 import hu.thesis.userservice.repository.AppUserRepository;
 import hu.thesis.userservice.repository.ResponsibilityAppUserRepository;
-import hu.webuni.security.JwtTokenService;
+import hu.thesis.security.JwtTokenService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -29,7 +30,6 @@ public class SecurityService {
     private final AppUserRepository appUserRepository;
     private final ResponsibilityAppUserRepository responsibilityAppUserRepository;
     private final JwtTokenService jwtTokenService;
-
     private final PasswordEncoder passwordEncoder;
 
     public Map<String, String> login(UserDetails userDetails) {
@@ -80,4 +80,9 @@ public class SecurityService {
     public AppUser findById(Long id) {
         return appUserRepository.findById(id).get();
     }
+
+    public List<AppUser> findAll() {
+        return appUserRepository.findAll();
+    }
+
 }
