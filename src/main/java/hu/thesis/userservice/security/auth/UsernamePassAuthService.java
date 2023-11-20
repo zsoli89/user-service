@@ -16,10 +16,6 @@ public class UsernamePassAuthService implements AuthenticationInterface {
     private final PasswordEncoder passwordEncoder;
     private final WebshopUserDetailsService webshopUserDetailsService;
 
-    public boolean isMatchesPassword(String incomingPassword, String encodedPassword) {
-        return passwordEncoder.matches(incomingPassword, encodedPassword);
-    }
-
     @Override
     public Authentication authenticate(String username, String password) {
         UserDetails userDetails = webshopUserDetailsService.loadUserByUsername(username);
@@ -29,6 +25,10 @@ public class UsernamePassAuthService implements AuthenticationInterface {
         }
         else
             throw new BadCredentialsException("Invalid username or password");
+    }
+
+    private boolean isMatchesPassword(String incomingPassword, String encodedPassword) {
+        return passwordEncoder.matches(incomingPassword, encodedPassword);
     }
 
 }

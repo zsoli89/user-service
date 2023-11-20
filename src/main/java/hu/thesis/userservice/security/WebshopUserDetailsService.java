@@ -27,18 +27,11 @@ public class WebshopUserDetailsService implements UserDetailsService {
 
     @Transactional
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String username) {
         AppUser webshopUser = userRepository.findAppuserByUsername(username)
-                .orElseThrow(()-> new UsernameNotFoundException(username));
+                .orElseThrow(()-> new UsernameNotFoundException(
+                        "Couldn't find AppUser by username: {%s}".formatted(username)));
         return createUserDetails(webshopUser);
-    }
-
-    public List<String> getRoles(String username) {
-        List<ResponsibilityAppUser> responsibilityAppUserList = responsibilityRepository.findResponsibilityAppUserByUsername(username);
-        List<String> roles = new ArrayList<>();
-        for(ResponsibilityAppUser item : responsibilityAppUserList)
-            roles.add(item.getRole());
-        return roles;
     }
 
     public UserDetails createUserDetails(AppUser appUser) {
@@ -47,5 +40,16 @@ public class WebshopUserDetailsService implements UserDetailsService {
                 .map(SimpleGrantedAuthority::new).toList();
         return new User(appUser.getUsername(), appUser.getPassword(), roles);
     }
+
+    public List<String> getRoles(String username) {
+        List<ResponsibilityAppUser> responsibilityAppUserList = responsibilityRepository
+                .findResponsibilityAppUserByUsername(username);
+        List<String> roles = new ArrayList<>();
+        for(ResponsibilityAppUser item : responsibilityAppUserList)
+            roles.add(item.getRole());
+        return roles;
+    }
+
+
 
 }

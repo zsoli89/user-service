@@ -1,6 +1,6 @@
 package hu.thesis.userservice.controller;
 
-import hu.thesis.userservice.dto.LoginDto;
+import hu.thesis.userservice.model.dto.LoginDto;
 import hu.thesis.userservice.model.entity.AppUser;
 import hu.thesis.userservice.security.auth.UsernamePassAuthService;
 

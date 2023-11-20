@@ -1,6 +1,6 @@
 package hu.thesis.userservice.service;
 
-import hu.thesis.userservice.dto.LoginDto;
+import hu.thesis.userservice.model.dto.LoginDto;
 import hu.thesis.userservice.model.entity.AppUser;
 import hu.thesis.userservice.model.entity.ResponsibilityAppUser;
 import hu.thesis.userservice.repository.AppUserRepository;
@@ -26,7 +26,7 @@ import java.util.Optional;
 @Service
 public class SecurityService {
 
-    private static final Logger logger = LoggerFactory.getLogger(SecurityService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(SecurityService.class);
     private final AppUserRepository appUserRepository;
     private final ResponsibilityAppUserRepository responsibilityAppUserRepository;
     private final JwtTokenService jwtTokenService;
@@ -35,13 +35,13 @@ public class SecurityService {
     public Map<String, String> login(UserDetails userDetails) {
         try {
             Map<String, String> tokenMap = new HashMap<>();
-            logger.info("Authentication set for user: {}", userDetails.getUsername());
+            LOGGER.info("Authentication set for user: {}", userDetails.getUsername());
             MDC.put("username", userDetails.getUsername());
             String accessToken = jwtTokenService.generateAccessToken(userDetails);
             tokenMap.put("accessToken", accessToken);
             return tokenMap;
         } catch (BadCredentialsException | ResponseStatusException e) {
-            logger.error("Error during login. message: {}", e.getMessage());
+            LOGGER.error("Error during login. message: {}", e.getMessage());
             throw e;
         }
     }
@@ -54,7 +54,7 @@ public class SecurityService {
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.SERVICE_UNAVAILABLE, "Error during delete user from redis");
         }
-        logger.info("{} user successfully logged out.", username);
+        LOGGER.info("{} user successfully logged out.", username);
         return "LOGGED OUT";
     }
 
@@ -74,11 +74,12 @@ public class SecurityService {
                         .role("customer")
                         .build()
         );
-        appUserRepository.save(appUser);
     }
 
     public AppUser findById(Long id) {
-        return appUserRepository.findById(id).get();
+        return appUserRepository.findById(id).orElseThrow(
+                () -> new ResponseStatusException(HttpStatus.NOT_FOUND)
+        );
     }
 
     public List<AppUser> findAll() {
